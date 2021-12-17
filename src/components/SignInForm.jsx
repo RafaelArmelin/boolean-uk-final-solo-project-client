@@ -38,7 +38,7 @@ export default function SignIn({ setAuthenticatedUser }) {
       }),
     };
 
-    fetch("${process.env.REACT_APP_SERVER_URL}/auth/signin", fetchOptions)
+    fetch(`${process.env.REACT_APP_SERVER_URL}/auth/signin`, fetchOptions)
       .then((res) => res.json())
       .then((data) => {
         const token = data.token;

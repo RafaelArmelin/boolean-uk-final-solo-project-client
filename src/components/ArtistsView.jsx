@@ -16,7 +16,7 @@ function ArtistsView(props) {
         setArtist(artistData);
         console.log("Artist", artistData);
       });
-  }, []);
+  }, [artistId]);
 
   return (
     <main className="">

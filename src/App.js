@@ -27,7 +27,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch(`http://localhost:3030/artists`)
+    fetch(`${process.env.REACT_APP_SERVER_URL}/artists`)
       .then((res) => res.json())
       .then((artistsData) => {
         setArtists(artistsData);

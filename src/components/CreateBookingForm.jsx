@@ -57,7 +57,7 @@ function CreateBookingForm(props) {
       body: JSON.stringify(customerDetails),
     };
 
-    fetch("${process.env.REACT_APP_SERVER_URL}/bookings", fetchOptionsBooking)
+    fetch(`${process.env.REACT_APP_SERVER_URL}/bookings`, fetchOptionsBooking)
       .then((res) => res.json())
       .then((newBooking) => {
         console.log("Inside POST response", newBooking);
