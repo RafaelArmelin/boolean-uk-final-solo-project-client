@@ -1,10 +1,15 @@
+import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./App.css";
-import SignUp from "../src/components/SignUpForm";
-import SignIn from "../src/components/SignInForm";
+import ArtistsList from "../src/components/ArtistsList";
+import ArtistsView from "../src/components/ArtistsView";
+import Main from "./components/Main";
+import CreateArtist from "./components/CreateArtist";
 
 function App() {
   const [authenticatedUser, setAuthenticatedUser] = useState(null);
+  const [artists, setArtists] = useState([]);
+  const [hideForm, setHideForm] = useState(true);
 
   const [user, setUser] = useState({
     name: "",
@@ -17,14 +22,43 @@ function App() {
 
     if (token) {
       setAuthenticatedUser(token);
+      return;
     }
+  }, []);
+
+  useEffect(() => {
+    fetch(`http://localhost:3030/artists`)
+      .then((res) => res.json())
+      .then((artistsData) => {
+        setArtists(artistsData);
+        console.log(artistsData);
+      });
   }, []);
 
   return (
     <>
-      <SignUp setAuthenticatedUser={setAuthenticatedUser} />
-      {/* {authenticatedUser && <div>Hello!</div>} */}
-      <SignIn setAuthenticatedUser={setAuthenticatedUser} />
+      <Routes>
+        <Route
+          path="/"
+          element={<Main setAuthenticatedUser={setAuthenticatedUser} />}
+        />
+        <Route
+          path="/artists"
+          element={authenticatedUser && <ArtistsList artists={artists} />}
+        />
+        <Route
+          path="/artists/:artistId"
+          element={
+            authenticatedUser && (
+              <ArtistsView hideForm={hideForm} setHideForm={setHideForm} />
+            )
+          }
+        />
+        <Route
+          path="/artists/create"
+          element={authenticatedUser && <CreateArtist />}
+        />
+      </Routes>
     </>
   );
 }

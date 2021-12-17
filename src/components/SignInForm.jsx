@@ -1,10 +1,13 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function SignIn({ setAuthenticatedUser }) {
   const [userName, setUserName] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const handleNameInput = (e) => {
     setUserName(e.target.value);
@@ -35,7 +38,7 @@ export default function SignIn({ setAuthenticatedUser }) {
       }),
     };
 
-    fetch("http://localhost:3030/auth/signin", fetchOptions)
+    fetch("${process.env.REACT_APP_SERVER_URL}/auth/signin", fetchOptions)
       .then((res) => res.json())
       .then((data) => {
         const token = data.token;
@@ -43,6 +46,7 @@ export default function SignIn({ setAuthenticatedUser }) {
         if (token) {
           setAuthenticatedUser(token);
           localStorage.setItem("token", token);
+          navigate("/artists");
         }
       });
   };
